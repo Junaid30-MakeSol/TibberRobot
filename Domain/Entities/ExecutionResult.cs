@@ -4,7 +4,7 @@ using TibberRobot.Domain.Common;
 
 namespace TibberRobot.Domain.Models;
 
-public class ExecutionResult : BaseAuditableEntity
+public class ExecutionResult : BaseEntity
 {
     [Required]
     [property: JsonPropertyName("timestamp")]
