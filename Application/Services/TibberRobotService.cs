@@ -1,17 +1,15 @@
 ﻿using System.Diagnostics;
 using TibberRobot.Application.Interfaces;
 using TibberRobot.Domain.Models;
-using TibberRobot.Infrastructure.Data;
+using TibberRobot.Infrastructure.Interfaces;
 
 namespace TibberRobot.Application.Services
 {
-    public class TibberRobotService : ITibberRobotService
+    public class TibberRobotService(ITiberRobotRepository _tiberRobotRepository) : ITibberRobotService
     {
-        private readonly ApplicationDbContext _dbContext;
-        public TibberRobotService(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        public async Task<List<ExecutionResult>> GetExecutionResultList() =>
+            await _tiberRobotRepository.GetExecutionResultList();
+
         public async Task<ExecutionResult> CalculatePathAsync(RobotRequest request)
         {
             var stopwatch = Stopwatch.StartNew();
@@ -46,9 +44,7 @@ namespace TibberRobot.Application.Services
                 Duration = stopwatch.Elapsed.TotalSeconds
             };
 
-            _dbContext.ExecutionRecords.Add(result);
-            await _dbContext.SaveChangesAsync();
-
+            await _tiberRobotRepository.Create(result);
             return result;
         }
 

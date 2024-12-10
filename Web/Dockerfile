@@ -4,27 +4,26 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["TibberRobot.Web/TibberRobot.Web.csproj", "TibberRobot.Web/"]
-COPY ["TibberRobot.Application/TibberRobot.Application.csproj", "TibberRobot.Application/"]
-COPY ["TibberRobot.Domain/TibberRobot.Domain.csproj", "TibberRobot.Domain/"]
-COPY ["TibberRobot.Infrastructure/TibberRobot.Infrastructure.csproj", "TibberRobot.Infrastructure/"]
+COPY ["Web/Web.csproj", "Web/"]
+COPY ["Application/Application.csproj", "Application/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 
-
-RUN dotnet restore "./TibberRobot.Web/./TibberRobot.Web.csproj"
+	
+RUN dotnet restore "./Web/./Web.csproj"
 COPY . .
-WORKDIR "/src/TibberRobot.Web"
-RUN dotnet build "./TibberRobot.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/Web"
+RUN dotnet build "./Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./TibberRobot.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "TibberRobot.Web.dll"]
+ENTRYPOINT ["dotnet", "Web.dll"]
