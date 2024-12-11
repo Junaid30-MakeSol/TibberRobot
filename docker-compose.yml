@@ -19,7 +19,6 @@ services:
       context: .
       dockerfile: Web/Dockerfile
     ports:
-      - "5000:8080"
       - "5001:8081" 
     depends_on:
     - sqlserver
