@@ -8,13 +8,13 @@ namespace UnitTests;
 [TestClass]
 public class RobotServiceTests
 {
-    private readonly Mock<ITiberRobotRepository> _mockRepository;
-    private readonly TibberRobotService _robotService;
+    private readonly Mock<ITiberRobotRepository> _tibberRobotRepository;
+    private readonly TibberRobotService _tibberRobotService;
 
     public RobotServiceTests()
     {
-        _mockRepository = new Mock<ITiberRobotRepository>();
-        _robotService = new TibberRobotService(_mockRepository.Object);
+        _tibberRobotRepository = new Mock<ITiberRobotRepository>();
+        _tibberRobotService = new TibberRobotService(_tibberRobotRepository.Object);
     }
 
     [TestMethod]
@@ -31,13 +31,13 @@ public class RobotServiceTests
            );
 
         // Act
-        var result = await _robotService.CalculatePathAsync(request);
+        var result = await _tibberRobotService.CalculatePathAsync(request);
 
         // Assert
         Assert.AreEqual(4, result.Result);
         Assert.AreEqual(2, result.Commands);
 
-        _mockRepository.Verify(repo => repo.Create(It.IsAny<ExecutionResult>()), Times.Once);
+        _tibberRobotRepository.Verify(repo => repo.Create(It.IsAny<ExecutionResult>()), Times.Once);
     }
 
     [TestMethod]
@@ -50,13 +50,13 @@ public class RobotServiceTests
            );
 
         // Act
-        var result = await _robotService.CalculatePathAsync(request);
+        var result = await _tibberRobotService.CalculatePathAsync(request);
 
         // Assert
         Assert.AreEqual(1, result.Result); // Only start point is visited
         Assert.AreEqual(0, result.Commands); // No commands processed
 
-        _mockRepository.Verify(repo => repo.Create(It.IsAny<ExecutionResult>()), Times.Once);
+        _tibberRobotRepository.Verify(repo => repo.Create(It.IsAny<ExecutionResult>()), Times.Once);
     }
 
     [TestMethod]
@@ -71,12 +71,12 @@ public class RobotServiceTests
                }
            );
         // Act
-        var result = await _robotService.CalculatePathAsync(request);
+        var result = await _tibberRobotService.CalculatePathAsync(request);
 
         // Assert
         Assert.AreEqual(1, result.Result); // Only start point is visited
         Assert.AreEqual(1, result.Commands); // 1 command processed
 
-        _mockRepository.Verify(repo => repo.Create(It.IsAny<ExecutionResult>()), Times.Once);
+        _tibberRobotRepository.Verify(repo => repo.Create(It.IsAny<ExecutionResult>()), Times.Once);
     }
 }
