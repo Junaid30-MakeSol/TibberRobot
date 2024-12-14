@@ -5,5 +5,6 @@ namespace TibberRobot.Infrastructure.Common.Interfaces;
 public interface IApplicationDbContext
 {
     DbSet<ExecutionResult> ExecutionRecords { get; }
+
 }
 

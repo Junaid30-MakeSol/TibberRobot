@@ -4,14 +4,8 @@ using TibberRobot.Infrastructure.Data;
 using TibberRobot.Infrastructure.Interfaces;
 
 namespace TibberRobot.Infrastructure.Repositories;
-public class TiberRobotRepository : ITiberRobotRepository
+public class TiberRobotRepository(ApplicationDbContext _applicationDbContext) : ITiberRobotRepository
 {
-    private readonly ApplicationDbContext _applicationDbContext;
-    public TiberRobotRepository(ApplicationDbContext applicationDbContext)
-    {
-        _applicationDbContext = applicationDbContext;
-    }
-
     public async Task<List<ExecutionResult>> GetExecutionResultList() =>
      await _applicationDbContext.Set<ExecutionResult>().ToListAsync();
 
@@ -20,6 +14,5 @@ public class TiberRobotRepository : ITiberRobotRepository
         await _applicationDbContext.Set<ExecutionResult>().AddAsync(model);
         await _applicationDbContext.SaveChangesAsync();
     }
-
 }
 

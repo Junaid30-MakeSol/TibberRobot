@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using TibberRobot.Application.Interfaces;
 using TibberRobot.Domain.Models;
 
@@ -22,7 +23,7 @@ public class TibberRobotController(ITibberRobotService _robotService) : Controll
     [ProducesResponseType(typeof(ExecutionResult), statusCode: 200)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<ExecutionResult>> EnterPath([FromBody] RobotRequest request)
+    public async Task<ActionResult<ExecutionResult>> EnterPath([Required, FromBody] RobotRequest request)
     {
         var result = await _robotService.CalculatePathAsync(request);
         return Ok(result);

@@ -5,11 +5,11 @@ namespace TibberRobot.Domain.Models;
 
 public record RobotRequest
 (
-  [Required]
+  [Required(ErrorMessage = "Start position must be provided.")]
   [property: JsonPropertyName("start")]
   Coordinates Start,
 
-  [Required]
+  [Required(ErrorMessage = "Commands list must not be empty.")]
   [property: JsonPropertyName("commands")]
   List<Command> Commands
 );
